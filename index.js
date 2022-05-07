@@ -16,7 +16,19 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
+    try {
+        await client.connect();
+        const inventory = client.db('laptopInventory').collection('laptop');
+        app.get('/laptop', async (req, res) => {
+            const query = {};
+            const cursor = inventory.find(query);
+            const laptops = await cursor.toArray();
+            res.send(laptops)
+        })
+    }
+    finally {
 
+    }
 }
 
 run().catch(console.dir);
