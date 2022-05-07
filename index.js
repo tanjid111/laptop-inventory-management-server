@@ -42,6 +42,14 @@ async function run() {
             const result = await inventory.insertOne(newInventory);
             res.send(result);
         })
+
+        //Delete API
+        app.delete('/laptop/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await inventory.deleteOne(query);
+            res.send(result);
+        })
     }
     finally {
 
