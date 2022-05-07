@@ -35,6 +35,13 @@ async function run() {
             const laptop = await inventory.findOne(query);
             res.send(laptop)
         })
+
+        //Post inventory
+        app.post('/laptop', async (req, res) => {
+            const newInventory = req.body;
+            const result = await inventory.insertOne(newInventory);
+            res.send(result);
+        })
     }
     finally {
 
