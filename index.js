@@ -20,9 +20,18 @@ async function run() {
         await client.connect();
         const inventory = client.db('laptopInventory').collection('laptop');
 
-        //Get all inventory
+        // Get all inventory
         app.get('/laptop', async (req, res) => {
             const query = {};
+            const cursor = inventory.find(query);
+            const laptops = await cursor.toArray();
+            res.send(laptops)
+        })
+
+        //Get email query
+        app.get('/laptop1', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
             const cursor = inventory.find(query);
             const laptops = await cursor.toArray();
             res.send(laptops)
@@ -60,7 +69,7 @@ async function run() {
             const updatedDoc = {
                 $set: {
                     quantity: updatedInventory.quantity,
-
+                    sold: updatedInventory.sold,
                 }
             }
             const result = await inventory.updateOne(filter, updatedDoc, options);
